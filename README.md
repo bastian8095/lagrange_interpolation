@@ -31,3 +31,10 @@ It answers the narrow question "what value does the Lagrange polynomial through 
 ## The awkward edge
 
 Duplicate x-coordinates are rejected with a `ValueError`, because every Lagrange basis polynomial divides by `(x_i - x_j)`. Coincident nodes are a user error, not something to silently merge. Additionally, like every polynomial interpolation scheme, high-degree interpolation over many equispaced nodes is numerically unstable near the ends of the interval (Runge's phenomenon); this library does nothing to mitigate that beyond evaluating the textbook formula faithfully.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
